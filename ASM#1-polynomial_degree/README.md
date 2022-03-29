@@ -16,5 +16,5 @@ Rozwiązanie będzie kompilowane poleceniem:
 ## Przykład użycia
 Przykład użycia znajduje się w pliku polynomial_degree_example.c. Można go skompilować i skonsolidować z rozwiązaniem poleceniami:
 
-`gcc -c -Wall -Wextra -std=c17 -O2 -o polynomial_degree_example.o polynomial_degree_example.c`
+`gcc -c -Wall -Wextra -std=c17 -O2 -o polynomial_degree_example.o polynomial_degree_example.c`  
 `gcc -o polynomial_degree_example polynomial_degree_example.o polynomial_degree.o`
