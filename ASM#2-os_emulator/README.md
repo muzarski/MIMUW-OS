@@ -187,9 +187,6 @@ Procesor wielordzeniowy obsługuje wszystkie instrukcje procesora jednordzeniowe
 
 Zachowanie procesora dla nieprawidłowych kodów instrukcji jest niezdefiniowane, ale najlepiej będzie ignorować takie kody. Wolno założyć, że funkcje są zawsze wywoływane z poprawnymi parametrami. Dla zachowania kompatybilności rozwiązanie jednordzeniowe po prostu ignoruje parametr `core` i stałą `CORES`. Emulator po napotkaniu instrukcji `BRK` wykonuje ją i kończy działanie funkcji `so_emul`. W procesorze wielordzeniowym instrukcja `BRK` kończy tylko wykonywanie funkcji `so_emul` dla tego rdzenia, który napotkał tę instrukcję.
 
-## Oddawanie rozwiązania
-
-Jako rozwiązanie należy wstawić w Moodle plik o nazwie `so_emulator.asm`.
 
 ## Kompilowanie rozwiązania
 
@@ -210,61 +207,3 @@ gcc -DCORES=4 -c -Wall -Wextra -std=c17 -O2 -o so_emulator_example.o so_emulator
 nasm -DCORES=4 -f elf64 -w+all -w+error -o so_emulator.o so_emulator.asm
 gcc -pthread -o so_emulator_example so_emulator_example.o so_emulator.o
 ```
-
-Przykładowe uruchomienie testów:
-
-```
-./so_emulator
-./so_emulator 61 18
-./so_emulator 10240
-```
-
-Plik `so_emulator_example.out` zawiera wyniki wypisywane na terminal przez powyższe polecenia.
-
-## Ocenianie
-
-Oceniane będą poprawność i szybkość działania programu, zajętość pamięci (rozmiary poszczególnych sekcji), styl kodowania, komentarze. Wystawienie oceny może też być uzależnione od osobistego wyjaśnienia szczegółów działania programu prowadzącemu zajęcia.
-
-## Pytania
-
-Pytania dotyczące zadania można zadawać w przeznaczonym do tego wątku na Moodle.
-
-## Nieudokumentowane instrukcje
-
-Niektóre klony procesorów SO wykonują dodatkowe instrukcje. Dotychczas udało się zidentyfikować następujące oficjalnie nieudokumentowane instrukcje:
-
--   `AND arg1, arg2`
-    
-    kod `0x0001 + 0x100 * arg1 + 0x0800 * arg2`
-    
-    Wykonuje bitową koniunkcję `arg1` i `arg2`. Umieszcza wynik w `arg1`. Ustawia znacznik `Z` zgodnie z wynikiem operacji. Nie modyfikuje znacznika `C`.
-    
--   `XOR arg1, arg2`
-    
-    kod `0x0003 + 0x100 * arg1 + 0x0800 * arg2`
-    
-    Wykonuje bitową rozłączną alternatywę `arg1` i `arg2`. Umieszcza wynik w `arg1`. Ustawia znacznik `Z` zgodnie z wynikiem operacji. Nie modyfikuje znacznika `C`.
-    
--   `ANDI arg1, imm8`
-    
-    kod `0x4800 + 0x100 * arg1 + imm8`
-    
-    Wykonuje bitową koniunkcję `arg1` i `imm8`. Umieszcza wynik w `arg1`. Ustawia znacznik `Z` zgodnie z wynikiem operacji. Nie modyfikuje znacznika `C`.
-    
--   `ORI arg1, imm8`
-    
-    kod `0x5000 + 0x100 * arg1 + imm8`
-    
-    Wykonuje bitową alternatywę `arg1` i `imm8`. Umieszcza wynik w `arg1`. Ustawia znacznik `Z` zgodnie z wynikiem operacji. Nie modyfikuje znacznika `C`.
-    
--   `RCRI arg1, imm8`
-    
-    kod `0x7000 + 0x100 * arg1 + imm8`
-    
-    Rotuje zawartość `arg` o `imm8` bitów w prawo poprzez znacznik `C`. Nie modyfikuje znacznika `Z`.
-    
--   `DJNZ imm8`
-    
-    kod `0xC100 + imm8`
-    
-    Jeśli wartość w rejestrze `D` jest niezerowa, to zmniejsza ją o jeden i wykonuje skok względny. Jeśli wartość w rejestrze `D` jest równa zeru, nie robi nic. Nie modyfikuje znaczników.
